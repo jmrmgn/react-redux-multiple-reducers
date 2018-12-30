@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+   render() {
+      return (
+         <div className="App">
+            <div className="col">
+               <div><span>A:</span><span>{this.props.a}</span></div>
+               <button onClick={() => this.props.updateA(this.props.b)} >Update A</button>
+            </div>
+            <div className="col">
+               <div><span>B:</span><span>{this.props.b}</span></div>
+               <button onClick={() => this.props.updateB(this.props.a)}>Update B</button>
+            </div>
+         </div>
+      );
+   }
 }
 
-export default App;
+const mapStoreToProps = (store) => {
+   return {
+      a: store.rA.a,
+      b: store.rB.b
+   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+   return {
+      updateA: (b) => dispatch({ type: 'UPDATE_A', b: b }),
+      updateB: (a) => dispatch({ type: 'UPDATE_B', a: a }),
+   }
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(App);
